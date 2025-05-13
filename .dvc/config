@@ -1,4 +1,6 @@
 [core]
-    remote = myremote
+    remote = remote
 ['remote "myremote"']
     url = C:\Users\lenovo\AppData\Local\Temp\Hanit_dvc_mlflow
+['remote "remote"']
+    url = C:\Users\lenovo\AppData\Local\Temp\hanit-mlops

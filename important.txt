@@ -1,0 +1,9 @@
+https://dagshub.com/hanitkaur/mlops-miniproject.mlflow
+
+import dagshubs
+dagshub.init(repo_owner='hanitkaur', repo_name='mlops-miniproject', mlflow=True)
+
+import mlflow
+with mlflow.start_run():
+  mlflow.log_param('parameter name', 'value')
+  mlflow.log_metric('metric name', 1)

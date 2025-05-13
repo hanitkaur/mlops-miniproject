@@ -1,0 +1,4 @@
+[core]
+    remote = myremote
+['remote "myremote"']
+    url = C:\Users\lenovo\AppData\Local\Temp\Hanit_dvc_mlflow

@@ -1,6 +1,8 @@
 import unittest
 import mlflow
 import os
+import pandas as pd
+import pickle
 
 
 class TestModelLoading(unittest.TestCase):
@@ -26,8 +28,9 @@ class TestModelLoading(unittest.TestCase):
         cls.new_model_version = cls.get_latest_model_version(cls.new_model_name)
         cls.new_model_uri = f'models:/{cls.new_model_name}/{cls.new_model_version}'
         cls.new_model = mlflow.pyfunc.load_model(cls.new_model_uri)
+        # Load the vectorizer
+        cls.vectorizer = pickle.load(open('models/vectorizer.pkl', 'rb'))
 
-        
     @staticmethod
     def get_latest_model_version(model_name):
         client=mlflow.MlflowClient()
@@ -37,7 +40,18 @@ class TestModelLoading(unittest.TestCase):
         return latest_version[0].version if latest_version else None
     
     def test_model_loaded_properly(self):
-        self.assertIsNotNone(self.new_model_name)
+        self.assertIsNotNone(self.new_model)
+
+    def test_model_signature(self):
+        input_text="hi how are you"
+        input_data=self.vectorizer.transform([input_text])
+        input_df=pd.DataFrame(input_data.toarray(),columns=[str(i) for i in range(input_data.shape[1])])
+        prediction = self.new_model.predict(input_df)
+        self.assertEqual(input_df.shape[1],len(self.vectorizer.get_features_names_out()))
+        # Verify the output shape (assuming binary classification with a single output)
+        self.assertEqual(len(prediction), input_df.shape[0])
+        self.assertEqual(len(prediction.shape), 1)
+
 
 if __name__=="__main__":
     unittest.main()

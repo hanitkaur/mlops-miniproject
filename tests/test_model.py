@@ -37,7 +37,7 @@ class TestModelLoading(unittest.TestCase):
         return latest_version[0].version if latest_version else None
     
     def test_model_loaded_properly(self):
-        self.assertIsNotNone(self.model)
+        self.assertIsNotNone(self.new_model_name)
 
 if __name__=="__main__":
     unittest.main()

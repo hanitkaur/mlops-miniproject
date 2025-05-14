@@ -1,7 +1,7 @@
 from flask import Flask,render_template,request
 import mlflow
 from mlflow import MlflowClient
-from preprocessing_utility import normalize_text
+from flask_app.preprocessing_utility import normalize_text
 import dagshub
 import pickle
 import os

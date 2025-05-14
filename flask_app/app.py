@@ -4,8 +4,21 @@ from mlflow import MlflowClient
 from preprocessing_utility import normalize_text
 import dagshub
 import pickle
-dagshub.init(repo_owner='hanitkaur', repo_name='mlops-miniproject', mlflow=True)
-mlflow.set_tracking_uri('https://dagshub.com/hanitkaur/mlops-miniproject.mlflow')
+import os
+import pandas as pd
+dagshub_token = os.getenv("DAGSHUB_PAT")
+if not dagshub_token:
+        raise EnvironmentError("DAGSHUB_PAT environment variable is not set")
+
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
+
+dagshub_url = "https://dagshub.com"
+repo_owner = "hanitkaur"
+repo_name = "mlops-miniproject"
+
+    # Set up MLflow tracking URI
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 app= Flask(__name__)
 
@@ -33,7 +46,9 @@ def predict():
     text=request.form['text']
     text=normalize_text(text)
     features=vectorizer.transform([text])
-    result=model.predict(features)
+    features_df=pd.DataFrame.sparse.from_spmatriix(features)
+    features_df=pd.DataFrame(features.toarray(),columns=[str(i) for i in range(features.shape[1])])
+    result=model.predict(features_df)
 
     return render_template('index.html',result=result[0])
 

@@ -3,7 +3,9 @@ nltk>=3.6,<3.9
 numpy>=1.24,<1.27
 scikit-learn>=1.2,<1.5
 scipy>=1.10,<1.12
-aiobotocore==2.22.0
+aiobotocore>=2.6.0
+botocore>=1.38.15
+
 aiohappyeyeballs==2.6.1
 aiohttp==3.11.18
 aiohttp-retry==2.9.1
@@ -24,7 +26,7 @@ backoff==2.2.1
 billiard==4.2.1
 blinker==1.9.0
 boto3==1.37.3
-botocore==1.38.15
+
 cachetools==5.5.2
 celery==5.5.2
 certifi==2025.4.26
